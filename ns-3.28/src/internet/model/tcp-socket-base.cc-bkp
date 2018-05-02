@@ -1,0 +1,28 @@
+The below piece of code should not be executed if
+
+if( ns3::Simulator::GetContext == attacker node id )
+
+
+m_state = ESTABLISHED;
+
+m_connected = true;
+
+m_retxEvent.Cancel ();
+
+m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+
+m_highTxMark = ++m_nextTxSequence;
+
+m_txBuffer->SetHeadSequence (m_nextTxSequence);
+
+SendEmptyPacket (TcpHeader::ACK);
+
+SendPendingData (m_connected);
+
+Simulator::ScheduleNow (&TcpSocketBase::ConnectionSucceeded, this);
+
+// Always respond to first data packet to speed up the connection.
+
+// Remove to get the behaviour of old NS-3 code.
+
+m_delAckCount = m_delAckMaxCount;
